@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>بَكْريّـكس | استوديو سامي البكري لتطوير واجهات ومواقع الأعمال</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+    }
+  </script>
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- خط تجوال من Google -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --apple-blur: 35px;
+    }
+    
+    body {
+      font-family: 'Tajawal', -apple-system, BlinkMacSystemFont, sans-serif;
+      transition: background-color 0.4s ease, color 0.4s ease;
+    }
+
+    /* خامات زجاج آبل التفاعلية - الوضعين النهاري والليلي */
+    .theme-glass-nav {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(var(--apple-blur)) saturate(180%);
+      -webkit-backdrop-filter: blur(var(--apple-blur)) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.05);
+      transition: all 0.4s ease;
+    }
+    .dark .theme-glass-nav {
+      background: rgba(18, 22, 32, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 1px 0 0 rgba(255, 255, 255, 0.1) inset;
+    }
+
+    .theme-card {
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(28px) saturate(180%);
+      -webkit-backdrop-filter: blur(28px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 15px 35px -10px rgba(15, 23, 42, 0.04);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .dark .theme-card {
+      background: rgba(22, 27, 40, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6), 0 1px 0 0 rgba(255, 255, 255, 0.08) inset;
+    }
+    .theme-card:hover {
+      border-color: rgba(56, 189, 248, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .theme-input {
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .dark .theme-input {
+      background: rgba(15, 20, 30, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .theme-input:focus-within {
+      border-color: #0284c7;
+      box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.15);
+    }
+    .dark .theme-input:focus-within {
+      background: rgba(15, 20, 30, 0.95);
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.15);
+    }
+
+    /* حالة الخطأ */
+    .input-error {
+      border-color: #ef4444 !important;
+      background: rgba(239, 68, 68, 0.08) !important;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.25) !important;
+      animation: shake 0.35s ease-in-out;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-5px); }
+      40%, 80% { transform: translateX(5px); }
+    }
+
+    .apple-btn-gradient {
+      background: linear-gradient(180deg, #0284c7 0%, #0369a1 100%);
+      box-shadow: 0 10px 25px -5px rgba(2, 132, 199, 0.4), 0 1px 1px 0 rgba(255, 255, 255, 0.25) inset;
+    }
+
+    .email-btn-gradient {
+      background: linear-gradient(180deg, #f1f5f9 0%, #e2e8f0 100%);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      color: #0f172a;
+    }
+    .dark .email-btn-gradient {
+      background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.5), 0 1px 1px 0 rgba(255, 255, 255, 0.1) inset;
+    }
+
+    /* لوحة الكانفاس التفاعلية بالخلفية */
+    #interactiveBackground {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body class="bg-[#F5F5F7] dark:bg-[#0B0F17] min-h-screen relative overflow-x-hidden text-[#1E293B] dark:text-[#E2E8F0] antialiased selection:bg-[#38BDF8] selection:text-[#0B0F17]">
+
+  <!-- الكانفاس التفاعلي للدوائر المضيئة المتأثرة بحركة اللمس -->
+  <canvas id="interactiveBackground"></canvas>
+
+  <!-- الشريط العلوي العائم -->
+  <header class="sticky top-5 z-50 px-4 max-w-5xl mx-auto">
+    <nav class="theme-glass-nav rounded-full px-4 sm:px-6 py-2.5 flex justify-between items-center transition-all duration-300">
+      
+      <!-- شعار الموقع بالرمز الهندسي الحديث -->
+      <a href="#" class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-[#0284c7]/20 via-[#0ea5e9]/10 to-[#38bdf8]/30 border border-[#38bdf8]/40 flex items-center justify-center shadow-[0_0_15px_rgba(56,189,248,0.25)] shrink-0 group">
+          <svg class="w-5 h-5 text-[#0284c7] dark:text-[#38BDF8] transition-transform duration-300 group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+            <polyline points="2 17 12 22 22 17"></polyline>
+            <polyline points="2 12 12 17 22 12"></polyline>
+          </svg>
+        </div>
+        <div>
+          <span class="font-extrabold text-sm sm:text-base text-[#0F172A] dark:text-white block leading-none">بَكْريّـكس | BAKRIX</span>
+          <span class="text-[11px] text-[#64748B] dark:text-[#94A3B8] font-medium hidden sm:inline-block">
+            استوديو سامي البكري • تصميم واجهات ومواقع الأنشطة التجارية
+          </span>
+          <span class="text-[11px] text-[#64748B] dark:text-[#94A3B8] font-medium sm:hidden">
+            سامي البكري • تصميم مواقع
+          </span>
+        </div>
+      </a>
+
+      <!-- أزرار الإجراءات + زر التبديل بين النهاري والليلي -->
+      <div class="flex items-center gap-2 shrink-0">
+        
+        <!-- زر التبديل بين الوضع الليلي والنهاري -->
+        <button type="button" onclick="toggleTheme()" id="themeToggleBtn" aria-label="تبديل الوضع" 
+          class="w-9 h-9 rounded-full bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 border border-black/5 dark:border-white/10 flex items-center justify-center text-sm transition transform active:scale-90 text-[#0F172A] dark:text-[#38BDF8]">
+          <i id="themeIcon" class="fa-solid fa-sun"></i>
+        </button>
+
+        <a href="tel:+967771051177" dir="ltr" class="hidden md:inline-flex items-center gap-2 text-xs font-semibold text-[#0F172A] dark:text-[#E2E8F0] bg-white/70 dark:bg-white/5 hover:bg-white dark:hover:bg-white/10 border border-black/5 dark:border-white/10 py-2 px-3.5 rounded-full transition shadow-sm">
+          <i class="fa-solid fa-phone text-[#0284c7] dark:text-[#38BDF8] text-[11px]"></i>
+          <span>+967 771 051 177</span>
+        </a>
+        <a href="#order" class="apple-btn-gradient text-xs sm:text-sm font-semibold text-white py-2 px-4 sm:px-5 rounded-full transition transform active:scale-95 flex items-center gap-1.5">
+          <span>طلب موقع</span>
+          <i class="fa-solid fa-arrow-left text-[10px]"></i>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- القسم الترحيبي (Hero Section) -->
+  <section class="max-w-4xl mx-auto px-4 pt-16 md:pt-24 pb-12 text-center relative z-10">
+    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full theme-card border border-black/5 dark:border-white/10 text-[#0284c7] dark:text-[#38BDF8] text-xs font-semibold mb-6 shadow-sm">
+      <span class="w-2 h-2 rounded-full bg-[#10B981] shadow-[0_0_8px_#10B981]"></span>
+      استوديو تصميم واجهات ومواقع لجميع الأنشطة والمشاريع
+    </div>
+    
+    <h1 class="text-3xl sm:text-5xl md:text-6xl font-extrabold text-[#0F172A] dark:text-white tracking-normal leading-[1.6] py-2 mb-5">
+      واجهة رقمية فائقة التميز، <br>
+      <span class="inline-block leading-[1.6] py-1 bg-clip-text text-transparent bg-gradient-to-r from-[#0284C7] via-[#0284c7] to-[#0D9488] dark:from-[#38BDF8] dark:via-[#0EA5E9] dark:to-[#2DD4BF]">
+        تنمي تجارتك وتبني ثقة فورية مع عملائك.
+      </span>
+    </h1>
+    
+    <!-- شارات الأنشطة التجارية -->
+    <div class="flex flex-wrap items-center justify-center gap-2 max-w-2xl mx-auto mb-6">
+      <span class="text-xs font-semibold px-3 py-1.5 rounded-full bg-white/70 dark:bg-white/5 border border-black/5 dark:border-white/10 text-[#0F172A] dark:text-[#E2E8F0]">
+        <i class="fa-solid fa-building text-[#0284C7] dark:text-[#38BDF8] ml-1"></i> الشركات والمؤسسات
+      </span>
+      <span class="text-xs font-semibold px-3 py-1.5 rounded-full bg-white/70 dark:bg-white/5 border border-black/5 dark:border-white/10 text-[#0F172A] dark:text-[#E2E8F0]">
+        <i class="fa-solid fa-bullhorn text-[#0D9488] dark:text-[#2DD4BF] ml-1"></i> الحملات الإعلانية
+      </span>
+      <span class="text-xs font-semibold px-3 py-1.5 rounded-full bg-white/70 dark:bg-white/5 border border-black/5 dark:border-white/10 text-[#0F172A] dark:text-[#E2E8F0]">
+        <i class="fa-solid fa-user-doctor text-[#0284c7] dark:text-[#38BDF8] ml-1"></i> العيادات والمراكز الطبية
+      </span>
+      <span class="text-xs font-semibold px-3 py-1.5 rounded-full bg-white/70 dark:bg-white/5 border border-black/5 dark:border-white/10 text-[#0F172A] dark:text-[#E2E8F0]">
+        <i class="fa-solid fa-user-tie text-[#7C3AED] dark:text-[#A855F7] ml-1"></i> بورتفوليو أصحاب المهن
+      </span>
+    </div>
+
+    <p class="text-[#64748B] dark:text-[#94A3B8] text-base md:text-lg max-w-2xl mx-auto mb-10 leading-relaxed font-normal">
+      بإشراف المصمم <strong class="text-[#0F172A] dark:text-white font-semibold">سامي البكري</strong>. نصمم مواقع وصفحات هبوط مخصصة لكل نشاط تجاري، تدمج المظهر العصري وسرعة الاستجابة مع خيارات تواصل متعددة وسلسة.
+    </p>
+
+    <div class="flex flex-wrap items-center justify-center gap-3">
+      <a href="#order" class="apple-btn-gradient hover:opacity-95 text-white font-semibold text-sm sm:text-base py-3.5 px-7 rounded-full transition-all transform active:scale-95 flex items-center gap-2">
+        <i class="fa-solid fa-paper-plane text-sm"></i>
+        <span>اطلب موقع نشاطك الآن</span>
+      </a>
+      <a href="https://wa.me/967771051177?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%20%D8%B3%D8%A7%D9%85%D9%8A%D8%8C%20%D8%A3%D9%88%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D8%AA%D8%B5%D9%85%D9%8A%D9%85%20%D9%85%D9%88%D9%82%D8%B9%20%D9%84%D9%86%D8%B4%D8%A7%D8%B7%D9%8A%20%D8%A7%D9%84%D8%AA%D8%AC%D8%A7%D8%B1%D9%8A" target="_blank" class="theme-card hover:bg-white/90 dark:hover:bg-white/10 text-[#0F172A] dark:text-white font-semibold text-sm sm:text-base py-3.5 px-6 rounded-full transition-all flex items-center gap-2 active:scale-95">
+        <i class="fa-brands fa-whatsapp text-[#22C55E] text-lg"></i>
+        <span>محادثة واتساب مباشرة</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- الخدمات المقدمة -->
+  <section id="services" class="max-w-5xl mx-auto px-4 py-8 relative z-10">
+    <div class="flex flex-col items-center mb-8 text-center">
+      <h2 class="text-2xl md:text-3xl font-bold text-[#0F172A] dark:text-white tracking-normal leading-normal">ماذا أقدم لنشاطك التجاري؟</h2>
+      <p class="text-[#64748B] dark:text-[#94A3B8] text-sm mt-1">حلول واجهات مخصصة لأي قطاع عمل</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      
+      <div class="theme-card p-7 rounded-[2rem] flex flex-col justify-between">
+        <div>
+          <div class="w-12 h-12 rounded-2xl bg-[#0284c7]/10 dark:bg-[#38BDF8]/10 text-[#0284c7] dark:text-[#38BDF8] flex items-center justify-center text-xl mb-5">
+            <i class="fa-solid fa-pager"></i>
+          </div>
+          <h3 class="text-lg font-bold text-[#0F172A] dark:text-white mb-2 leading-relaxed">صفحات هبوط تسويقية للحملات</h3>
+          <p class="text-[#64748B] dark:text-[#94A3B8] text-sm leading-relaxed mb-6">
+            صفحات مخصصة لترويج العروض والخدمات الخاصة بشركتك، صُممت خصيصاً لرفع نسبة المبيعات وتوجيه الزبون للتواصل الفوري.
+          </p>
+        </div>
+        <div>
+          <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-[#0284c7] dark:text-[#38BDF8] bg-[#0284c7]/10 dark:bg-[#38BDF8]/10 px-3 py-1.5 rounded-full">
+            <i class="fa-solid fa-arrow-trend-up text-[10px]"></i> عائد تسويقي وتحويل مبيعات
+          </span>
+        </div>
+      </div>
+
+      <div class="theme-card p-7 rounded-[2rem] flex flex-col justify-between">
+        <div>
+          <div class="w-12 h-12 rounded-2xl bg-[#0D9488]/10 dark:bg-[#2DD4BF]/10 text-[#0D9488] dark:text-[#2DD4BF] flex items-center justify-center text-xl mb-5">
+            <i class="fa-solid fa-network-wired"></i>
+          </div>
+          <h3 class="text-lg font-bold text-[#0F172A] dark:text-white mb-2 leading-relaxed">مواقع متكاملة للأعمال والشركات</h3>
+          <p class="text-[#64748B] dark:text-[#94A3B8] text-sm leading-relaxed mb-6">
+            واجهات شاملة للمؤسسات، المكاتب المهنية، والمراكز الخدمية لعرض الخدمات وقوائم الأعمال، مزودة بنماذج طلب ترسل التفاصيل لواتساب والبريد فوراً.
+          </p>
+        </div>
+        <div>
+          <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-[#0D9488] dark:text-[#2DD4BF] bg-[#0D9488]/10 dark:bg-[#2DD4BF]/10 px-3 py-1.5 rounded-full">
+            <i class="fa-solid fa-circle-check text-[10px]"></i> هوية احترافية تامة
+          </span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- قسم نموذج طلب مشروع -->
+  <section id="order" class="max-w-2xl mx-auto px-4 py-12 relative z-10">
+    <div class="theme-card p-6 sm:p-10 rounded-[2.5rem] relative overflow-hidden">
+      
+      <!-- إشعار التنبيه الاحترافي الداخلي -->
+      <div id="customAlert" class="hidden transform -translate-y-4 opacity-0 transition-all duration-300 mb-6 p-4 rounded-2xl bg-red-500/10 border border-red-500/30 backdrop-blur-xl flex items-center justify-between gap-3 text-red-600 dark:text-red-200">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full bg-red-500/20 text-red-500 dark:text-red-400 flex items-center justify-center shrink-0">
+            <i class="fa-solid fa-circle-exclamation text-sm"></i>
+          </div>
+          <span id="alertMessage" class="text-xs sm:text-sm font-semibold"></span>
+        </div>
+        <button type="button" onclick="hideAlert()" class="text-red-500/70 hover:text-red-600 dark:text-red-400/70 dark:hover:text-red-300 p-1">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+      </div>
+
+      <div class="text-center mb-8">
+        <span class="text-[11px] font-bold tracking-widest text-[#0284c7] dark:text-[#38BDF8] uppercase">Order Your Custom Website</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0F172A] dark:text-white mt-1 leading-normal">اطلب موقعك لنشاطك التجاري</h2>
+        <p class="text-[#64748B] dark:text-[#94A3B8] text-xs sm:text-sm mt-1">حدد تفاصيل طلبك واختر إرساله عبر واتساب أو عبر البريد الإلكتروني</p>
+      </div>
+
+      <form id="orderForm" class="space-y-3.5" novalidate>
+        
+        <!-- حقل اسم العميل -->
+        <div id="cell-clientName" class="theme-input rounded-2xl p-3.5 px-4">
+          <label class="block text-[11px] font-bold text-[#64748B] dark:text-[#94A3B8] mb-1" for="clientName">
+            اسم العميل الكريم
+          </label>
+          <input type="text" id="clientName" placeholder="مثال: أحمد محمد علي" 
+            oninput="clearError('cell-clientName')"
+            class="w-full bg-transparent outline-none text-[#0F172A] dark:text-white font-medium text-sm placeholder-[#94A3B8] dark:placeholder-[#64748B]">
+        </div>
+
+        <!-- حقل اسم النشاط التجاري -->
+        <div id="cell-businessName" class="theme-input rounded-2xl p-3.5 px-4">
+          <label class="block text-[11px] font-bold text-[#64748B] dark:text-[#94A3B8] mb-1" for="businessName">
+            اسم النشاط التجاري / المؤسسة
+          </label>
+          <input type="text" id="businessName" placeholder="مثال: شركة النور للحلول أو عيادة الأمل..." 
+            oninput="clearError('cell-businessName')"
+            class="w-full bg-transparent outline-none text-[#0F172A] dark:text-white font-medium text-sm placeholder-[#94A3B8] dark:placeholder-[#64748B]">
+        </div>
+
+        <!-- حقل رقم الهاتف -->
+        <div id="cell-clientPhone" class="theme-input rounded-2xl p-3.5 px-4">
+          <label class="block text-[11px] font-bold text-[#64748B] dark:text-[#94A3B8] mb-1" for="clientPhone">
+            رقم هاتفك للتواصل
+          </label>
+          <input type="tel" id="clientPhone" placeholder="770000000" dir="ltr"
+            oninput="clearError('cell-clientPhone')"
+            class="w-full bg-transparent outline-none text-[#0F172A] dark:text-white font-mono text-sm placeholder-[#94A3B8] dark:placeholder-[#64748B] text-right">
+        </div>
+
+        <!-- القائمة المنسدلة للنشاط التجاري -->
+        <div id="cell-serviceType" class="theme-input rounded-2xl p-3.5 px-4 transition-all duration-300">
+          <label class="block text-[11px] font-bold text-[#64748B] dark:text-[#94A3B8] mb-1">
+            نوع النشاط التجاري أو الخدمة المطلوبة
+          </label>
+          
+          <button type="button" id="dropdownBtn" onclick="toggleDropdown()" 
+            class="w-full flex items-center justify-between text-right text-sm font-medium text-[#0F172A] dark:text-white py-0.5 outline-none cursor-pointer">
+            <span id="selectedServiceText" class="text-[#94A3B8] dark:text-[#64748B] font-normal">اختر مجال النشاط...</span>
+            <i id="dropdownArrow" class="fa-solid fa-chevron-down text-xs text-[#64748B] dark:text-[#94A3B8] transition-transform duration-300"></i>
+          </button>
+
+          <input type="hidden" id="serviceType" name="serviceType">
+
+          <div id="inlineDropdown" class="hidden overflow-hidden transition-all duration-300 mt-2.5 pt-2 border-t border-black/5 dark:border-white/5 divide-y divide-black/5 dark:divide-white/5">
+            
+            <div onclick="selectService('موقع شركة أو مؤسسة تجارية')" 
+                 class="service-item py-2.5 px-3 rounded-xl flex items-center justify-between text-sm cursor-pointer hover:bg-black/5 dark:hover:bg-white/5 transition text-[#0F172A] dark:text-white">
+              <span>موقع شركة أو مؤسسة تجارية</span>
+              <i class="fa-solid fa-check text-[#0284c7] dark:text-[#38BDF8] hidden check-icon text-xs"></i>
+            </div>
+
+            <div onclick="selectService('صفحة هبوط إعلانية لخدمة أو حملة')" 
+                 class="service-item py-2.5 px-3 rounded-xl flex items-center justify-between text-sm cursor-pointer hover:bg-black/5 dark:hover:bg-white/5 transition text-[#0F172A] dark:text-white">
+              <span>صفحة هبوط إعلانية لخدمة أو حملة</span>
+              <i class="fa-solid fa-check text-[#0284c7] dark:text-[#38BDF8] hidden check-icon text-xs"></i>
+            </div>
+
+            <div onclick="selectService('موقع طبي / عيادة / استشارات')" 
+                 class="service-item py-2.5 px-3 rounded-xl flex items-center justify-between text-sm cursor-pointer hover:bg-black/5 dark:hover:bg-white/5 transition text-[#0F172A] dark:text-white">
+              <span>موقع طبي / عيادة / استشارات</span>
+              <i class="fa-solid fa-check text-[#0284c7] dark:text-[#38BDF8] hidden check-icon text-xs"></i>
+            </div>
+
+            <div onclick="selectService('بورتفوليو شخصي أو فكرة أخرى')" 
+                 class="service-item py-2.5 px-3 rounded-xl flex items-center justify-between text-sm cursor-pointer hover:bg-black/5 dark:hover:bg-white/5 transition text-[#0F172A] dark:text-white">
+              <span>بورتفوليو شخصي أو فكرة أخرى</span>
+              <i class="fa-solid fa-check text-[#0284c7] dark:text-[#38BDF8] hidden check-icon text-xs"></i>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- تفاصيل المتطلبات -->
+        <div id="cell-projectNotes" class="theme-input rounded-2xl p-3.5 px-4">
+          <label class="block text-[11px] font-bold text-[#64748B] dark:text-[#94A3B8] mb-1" for="projectNotes">
+            تفاصيل النشاط أو ما ترغب بوجوده في الموقع
+          </label>
+          <textarea id="projectNotes" rows="3" placeholder="اذكر باختصار الخدمات أو الأقسام التي تريد عرضها..." 
+            oninput="clearError('cell-projectNotes')"
+            class="w-full bg-transparent outline-none text-[#0F172A] dark:text-white font-medium text-sm placeholder-[#94A3B8] dark:placeholder-[#64748B] leading-relaxed"></textarea>
+        </div>
+
+        <!-- أزرار الإرسال المشتركة -->
+        <div class="pt-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
+          
+          <button type="button" onclick="sendOrder('whatsapp')" class="w-full py-4 px-5 rounded-2xl apple-btn-gradient hover:opacity-95 text-white font-bold text-sm flex items-center justify-center gap-2.5 transition transform active:scale-[0.98] cursor-pointer">
+            <i class="fa-brands fa-whatsapp text-lg"></i>
+            <span>إرسال عبر واتساب</span>
+          </button>
+
+          <button type="button" onclick="sendOrder('email')" class="w-full py-4 px-5 rounded-2xl email-btn-gradient hover:opacity-90 font-bold text-sm flex items-center justify-center gap-2.5 transition transform active:scale-[0.98] cursor-pointer">
+            <i class="fa-solid fa-envelope text-[#0284c7] dark:text-[#38BDF8] text-base"></i>
+            <span>إرسال عبر الإيميل</span>
+          </button>
+
+        </div>
+
+      </form>
+    </div>
+  </section>
+
+  <!-- بطاقة الاتصال والبريد -->
+  <section class="max-w-2xl mx-auto px-4 pb-12 relative z-10">
+    <div class="theme-card p-5 rounded-[2rem] flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-right">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 text-[#0284c7] dark:text-[#38BDF8] flex items-center justify-center text-sm">
+          <i class="fa-solid fa-envelope-open-text"></i>
+        </div>
+        <div>
+          <h4 class="font-bold text-sm text-[#0F172A] dark:text-white">متاح دائماً للتواصل والاتفاق</h4>
+          <p class="text-[11px] text-[#64748B] dark:text-[#94A3B8]">جاهز لتنفيذ طلباتك في أي وقت</p>
+        </div>
+      </div>
+      <div class="flex flex-col sm:flex-row items-center gap-2">
+        <a href="mailto:Samialbakri99@gmail.com" class="theme-card hover:bg-white dark:hover:bg-white/10 text-xs font-medium text-[#0F172A] dark:text-white py-2 px-3.5 rounded-full transition shadow-sm flex items-center gap-1.5">
+          <i class="fa-solid fa-envelope text-[#0284c7] dark:text-[#38BDF8]"></i>
+          <span>Samialbakri99@gmail.com</span>
+        </a>
+        <a href="tel:+967771051177" dir="ltr" class="theme-card hover:bg-white dark:hover:bg-white/10 text-xs font-mono font-bold text-[#0284c7] dark:text-[#38BDF8] py-2 px-3.5 rounded-full transition shadow-sm">
+          +967 771 051 177
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- التذييل -->
+  <footer class="max-w-3xl mx-auto px-4 pb-16 text-center text-xs text-[#64748B] dark:text-[#94A3B8] relative z-10">
+    <p class="font-medium mb-3 text-[11px]">© جميع الحقوق محفوظة — بَكْريّـكس | سامي عدنان البكري</p>
+
+    <div class="inline-flex items-center gap-2 theme-card px-4 py-2 rounded-full text-[11px] font-medium text-[#64748B] dark:text-[#94A3B8]">
+      <i class="fa-solid fa-code text-[#0284c7] dark:text-[#38BDF8]"></i>
+      <span>تصميم وتطوير / سامي البكري :</span>
+      <a href="tel:+967771051177" dir="ltr" class="text-[#0284c7] dark:text-[#38BDF8] font-mono font-bold hover:underline">
+        771051177
+      </a>
+    </div>
+  </footer>
+
+  <!-- زر واتساب العائم -->
+  <a href="https://wa.me/967771051177?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%20%D8%B3%D8%A7%D9%85%D9%8A%D8%8C%20%D8%A3%D9%88%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D8%AA%D8%B5%D9%85%D9%8A%D9%85%20%D9%85%D9%88%D9%82%D8%B9%20%D8%AC%D8%AF%D9%8A%D8%AF" target="_blank" 
+     aria-label="تواصل واتساب"
+     class="fixed bottom-6 left-6 z-50 w-13 h-13 p-3.5 rounded-full bg-[#22C55E] text-white flex items-center justify-center shadow-2xl hover:scale-105 active:scale-95 transition-all duration-200">
+    <i class="fa-brands fa-whatsapp text-2xl"></i>
+  </a>
+
+  <!-- جافاسكريبت إدارة الوضعين والقوائم والتنبيهات وخلفية البلور -->
+  <script>
+    const MY_PHONE = "967771051177";
+    const MY_EMAIL = "Samialbakri99@gmail.com";
+
+    // -------------------------------------------------------------
+    // إدارة الوضع الليلي والنهاري (Theme Toggle Logic)
+    // -------------------------------------------------------------
+    const html = document.documentElement;
+    const themeIcon = document.getElementById('themeIcon');
+
+    // استعادة الوضع المحفوظ أو الاعتماد على الليلي كوضع افتراضي
+    const currentTheme = localStorage.getItem('theme') || 'dark';
+    if (currentTheme === 'light') {
+      html.classList.remove('dark');
+      themeIcon.classList.replace('fa-sun', 'fa-moon');
+    } else {
+      html.classList.add('dark');
+      themeIcon.classList.replace('fa-moon', 'fa-sun');
+    }
+
+    function toggleTheme() {
+      if (html.classList.contains('dark')) {
+        html.classList.remove('dark');
+        themeIcon.classList.replace('fa-sun', 'fa-moon');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.classList.add('dark');
+        themeIcon.classList.replace('fa-moon', 'fa-sun');
+        localStorage.setItem('theme', 'dark');
+      }
+      updateOrbColors();
+    }
+
+    // -------------------------------------------------------------
+    // إشعار التنبيه الاحترافي الداخلي
+    // -------------------------------------------------------------
+    let alertTimeout;
+
+    function triggerAlert(message) {
+      const alertBox = document.getElementById('customAlert');
+      const alertMsg = document.getElementById('alertMessage');
+      
+      alertMsg.textContent = message;
+      alertBox.classList.remove('hidden');
+      
+      setTimeout(() => {
+        alertBox.classList.remove('-translate-y-4', 'opacity-0');
+      }, 10);
+
+      clearTimeout(alertTimeout);
+      alertTimeout = setTimeout(() => {
+        hideAlert();
+      }, 4500);
+    }
+
+    function hideAlert() {
+      const alertBox = document.getElementById('customAlert');
+      alertBox.classList.add('-translate-y-4', 'opacity-0');
+      setTimeout(() => {
+        alertBox.classList.add('hidden');
+      }, 300);
+    }
+
+    function clearError(cellId) {
+      const cell = document.getElementById(cellId);
+      if (cell) {
+        cell.classList.remove('input-error');
+      }
+    }
+
+    // -------------------------------------------------------------
+    // القائمة المنسدلة للخدمات
+    // -------------------------------------------------------------
+    function toggleDropdown() {
+      const dropdown = document.getElementById('inlineDropdown');
+      const arrow = document.getElementById('dropdownArrow');
+      dropdown.classList.toggle('hidden');
+      arrow.classList.toggle('rotate-180');
+    }
+
+    function selectService(serviceName) {
+      document.getElementById('serviceType').value = serviceName;
+      const label = document.getElementById('selectedServiceText');
+      label.textContent = serviceName;
+      label.classList.remove('text-[#94A3B8]', 'dark:text-[#64748B]', 'font-normal');
+      label.classList.add('text-[#0F172A]', 'dark:text-white', 'font-semibold');
+
+      clearError('cell-serviceType');
+
+      document.querySelectorAll('.service-item').forEach(item => {
+        const text = item.querySelector('span').textContent.trim();
+        const check = item.querySelector('.check-icon');
+        
+        if (text === serviceName) {
+          item.classList.add('bg-black/5', 'dark:bg-white/10', 'font-bold');
+          check.classList.remove('hidden');
+        } else {
+          item.classList.remove('bg-black/5', 'dark:bg-white/10', 'font-bold');
+          check.classList.add('hidden');
+        }
+      });
+
+      toggleDropdown();
+    }
+
+    // -------------------------------------------------------------
+    // إرسال الطلب (واتساب / إيميل)
+    // -------------------------------------------------------------
+    function sendOrder(method) {
+      const clientName = document.getElementById('clientName').value.trim();
+      const businessName = document.getElementById('businessName').value.trim();
+      const phone = document.getElementById('clientPhone').value.trim();
+      const service = document.getElementById('serviceType').value;
+      const notes = document.getElementById('projectNotes').value.trim();
+
+      let hasError = false;
+      let firstErrorMsg = "";
+
+      if (!clientName) {
+        document.getElementById('cell-clientName').classList.add('input-error');
+        if (!firstErrorMsg) firstErrorMsg = "يرجى كتابة اسم العميل الكريم.";
+        hasError = true;
+      }
+      if (!businessName) {
+        document.getElementById('cell-businessName').classList.add('input-error');
+        if (!firstErrorMsg) firstErrorMsg = "يرجى إدخال اسم النشاط التجاري أو المؤسسة.";
+        hasError = true;
+      }
+      if (!phone) {
+        document.getElementById('cell-clientPhone').classList.add('input-error');
+        if (!firstErrorMsg) firstErrorMsg = "يرجى إدخال رقم الهاتف للتواصل معك.";
+        hasError = true;
+      }
+      if (!service) {
+        document.getElementById('cell-serviceType').classList.add('input-error');
+        if (!firstErrorMsg) firstErrorMsg = "يرجى اختيار نوع النشاط التجاري من القائمة.";
+        hasError = true;
+      }
+      if (!notes) {
+        document.getElementById('cell-projectNotes').classList.add('input-error');
+        if (!firstErrorMsg) firstErrorMsg = "يرجى كتابة نبذة موجزة عن تفاصيل طلبك.";
+        hasError = true;
+      }
+
+      if (hasError) {
+        triggerAlert(firstErrorMsg);
+        return;
+      }
+
+      hideAlert();
+
+      if (method === 'whatsapp') {
+        const formattedMessage = 
+`*طلب موقع لنشاط تجاري (عبر استوديو بَكْريّـكس)*
+
+👤 *اسم العميل:* ${clientName}
+🏢 *اسم النشاط التجاري:* ${businessName}
+📞 *رقم العميل:* ${phone}
+💼 *نوع النشاط المطلوب:* ${service}
+
+📝 *تفاصيل الفكرة والمتطلبات:*
+${notes}`;
+        window.open(`https://wa.me/${MY_PHONE}?text=${encodeURIComponent(formattedMessage)}`, '_blank');
+      } else if (method === 'email') {
+        const emailSubject = `طلب تصميم موقع: ${businessName} - (${clientName})`;
+        const emailBody = 
+`طلب تصميم موقع جديد عبر منصة بَكْريّـكس:
+
+اسم العميل: ${clientName}
+اسم النشاط التجاري: ${businessName}
+رقم الهاتف / واتساب: ${phone}
+نوع النشاط التجاري: ${service}
+
+تفاصيل الفكرة والمتطلبات:
+${notes}`;
+        window.location.href = `mailto:${MY_EMAIL}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+      }
+    }
+
+    // -------------------------------------------------------------
+    // كود الكرات الزجاجية المتوافقة مع الوضعين واللمس بالأصبع
+    // -------------------------------------------------------------
+    const canvas = document.getElementById('interactiveBackground');
+    const ctx = canvas.getContext('2d');
+
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+
+    window.addEventListener('resize', () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    });
+
+    const pointer = {
+      x: width / 2,
+      y: height / 2,
+      targetX: width / 2,
+      targetY: height / 2,
+      isInteracting: false
+    };
+
+    window.addEventListener('touchmove', (e) => {
+      if (e.touches.length > 0) {
+        pointer.targetX = e.touches[0].clientX;
+        pointer.targetY = e.touches[0].clientY;
+        pointer.isInteracting = true;
+      }
+    }, { passive: true });
+
+    window.addEventListener('touchstart', (e) => {
+      if (e.touches.length > 0) {
+        pointer.targetX = e.touches[0].clientX;
+        pointer.targetY = e.touches[0].clientY;
+        pointer.isInteracting = true;
+      }
+    }, { passive: true });
+
+    window.addEventListener('mousemove', (e) => {
+      pointer.targetX = e.clientX;
+      pointer.targetY = e.clientY;
+      pointer.isInteracting = true;
+    });
+
+    let orbs = [];
+
+    function updateOrbColors() {
+      const isDark = html.classList.contains('dark');
+      orbs = [
+        { x: width * 0.2, y: height * 0.3, radius: 150, color: isDark ? 'rgba(56, 189, 248, 0.16)' : 'rgba(2, 132, 199, 0.12)', vx: 0.5, vy: 0.4 },
+        { x: width * 0.8, y: height * 0.2, radius: 190, color: isDark ? 'rgba(14, 165, 233, 0.12)' : 'rgba(14, 165, 233, 0.10)', vx: -0.4, vy: 0.3 },
+        { x: width * 0.5, y: height * 0.7, radius: 170, color: isDark ? 'rgba(45, 212, 191, 0.13)' : 'rgba(13, 148, 136, 0.10)', vx: 0.3, vy: -0.5 },
+        { x: width * 0.15, y: height * 0.8, radius: 140, color: isDark ? 'rgba(168, 85, 247, 0.11)' : 'rgba(147, 51, 234, 0.08)', vx: -0.3, vy: -0.3 },
+        { x: width * 0.85, y: height * 0.85, radius: 160, color: isDark ? 'rgba(2, 132, 199, 0.14)' : 'rgba(56, 189, 248, 0.12)', vx: 0.4, vy: -0.4 }
+      ];
+    }
+
+    updateOrbColors();
+
+    function render() {
+      ctx.clearRect(0, 0, width, height);
+
+      pointer.x += (pointer.targetX - pointer.x) * 0.08;
+      pointer.y += (pointer.targetY - pointer.y) * 0.08;
+
+      orbs.forEach(orb => {
+        orb.x += orb.vx;
+        orb.y += orb.vy;
+
+        if (orb.x < 50 || orb.x > width - 50) orb.vx *= -1;
+        if (orb.y < 50 || orb.y > height - 50) orb.vy *= -1;
+
+        if (pointer.isInteracting) {
+          const dx = pointer.x - orb.x;
+          const dy = pointer.y - orb.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < 400 && dist > 1) {
+            const force = (400 - dist) / 400;
+            orb.x += (dx / dist) * force * 3.5;
+            orb.y += (dy / dist) * force * 3.5;
+          }
+        }
+
+        const gradient = ctx.createRadialGradient(orb.x, orb.y, 0, orb.x, orb.y, orb.radius);
+        gradient.addColorStop(0, orb.color);
+        gradient.addColorStop(0.6, orb.color.replace(/[\d\.]+\)$/, '0.04)'));
+        gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(orb.x, orb.y, orb.radius, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      requestAnimationFrame(render);
+    }
+
+    render();
+  </script>
+
+</body>
+</html>
